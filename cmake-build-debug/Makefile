@@ -67,10 +67,10 @@ RM = /opt/clion/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/michalon/Cshell
+CMAKE_SOURCE_DIR = /home/michalon/Cshell/Chell
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/michalon/Cshell/cmake-build-debug
+CMAKE_BINARY_DIR = /home/michalon/Cshell/Chell/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/michalon/Cshell/cmake-build-debug/CMakeFiles /home/michalon/Cshell/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/michalon/Cshell/Chell/cmake-build-debug/CMakeFiles /home/michalon/Cshell/Chell/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/michalon/Cshell/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/michalon/Cshell/Chell/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -142,6 +142,33 @@ Cshell/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Cshell.dir/build.make CMakeFiles/Cshell.dir/build
 .PHONY : Cshell/fast
 
+builtins.o: builtins.c.o
+
+.PHONY : builtins.o
+
+# target to build an object file
+builtins.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Cshell.dir/build.make CMakeFiles/Cshell.dir/builtins.c.o
+.PHONY : builtins.c.o
+
+builtins.i: builtins.c.i
+
+.PHONY : builtins.i
+
+# target to preprocess a source file
+builtins.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Cshell.dir/build.make CMakeFiles/Cshell.dir/builtins.c.i
+.PHONY : builtins.c.i
+
+builtins.s: builtins.c.s
+
+.PHONY : builtins.s
+
+# target to generate assembly for a file
+builtins.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Cshell.dir/build.make CMakeFiles/Cshell.dir/builtins.c.s
+.PHONY : builtins.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -178,6 +205,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Cshell"
+	@echo "... builtins.o"
+	@echo "... builtins.i"
+	@echo "... builtins.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

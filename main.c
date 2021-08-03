@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "libs/scplib/scp/containers/hashmap.h"
 
 #define BUFFER_SIZE 256
 
@@ -88,7 +89,8 @@ int execAllPaths(char** args, char** paths){
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char** argv, char** envp) {
     char** paths = generatePath(getenv("PATH"));
     while(1){
-        printf("$ ");
+        char pwd[BUFFER_SIZE];
+        printf("PATH: [%s]\n$ ", getcwd(pwd, BUFFER_SIZE));
         fflush(stdout);
         char userInput[BUFFER_SIZE] = {0};
         fgets(userInput, BUFFER_SIZE, stdin);
@@ -100,6 +102,6 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char** argv, 
             execAllPaths(args, paths);
         }
         waitpid(-1, &pid, 0);
-
+        printf("\n");
     }
 }

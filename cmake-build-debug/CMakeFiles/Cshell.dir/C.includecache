@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/michalon/Cshell/main.c
+/home/michalon/Cshell/Chell/main.c
 stdio.h
 -
 stdlib.h
@@ -17,4 +17,6 @@ sys/types.h
 -
 sys/wait.h
 -
+libs/scplib/containers/hashmap.h
+/home/michalon/Cshell/Chell/libs/scplib/containers/hashmap.h
 

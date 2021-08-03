@@ -1,3 +1,3 @@
-/home/michalon/Cshell/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/michalon/Cshell/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/michalon/Cshell/cmake-build-debug/CMakeFiles/Cshell.dir
+/home/michalon/Cshell/Chell/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/michalon/Cshell/Chell/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/michalon/Cshell/Chell/cmake-build-debug/CMakeFiles/Cshell.dir

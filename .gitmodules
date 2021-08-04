@@ -1,0 +1,3 @@
+[submodule "libs/scplib"]
+	path = libs/scplib
+	url = https://github.com/VokunGahrotLaas/scplib.git

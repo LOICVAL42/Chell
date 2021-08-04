@@ -2,13 +2,13 @@ DEBUG = no
 GRAMMAR_NAZI = no
 
 CC = gcc
-CCFLAGS = -std=gnu17 -Wall -Wextra -Wconversion -Wpedantic -DSCP_PEDANTIC
+CCFLAGS = -std=gnu17 -Wall -Wextra -Wconversion
 LDFLAGS =
 INCLUDES = -I. -I/usr/include -Ilibs/scplib
 LIBS = -L/usr/lib
 SRC = $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
-EXEC = program
+EXEC = Chell
 
 ifeq ($(DEBUG),yes)
 	CCFLAGS += -O0

@@ -206,6 +206,12 @@ ProcessorCount_cmd_nproc:FILEPATH=/usr/bin/nproc
 //Path to a program.
 ProcessorCount_cmd_sysctl:FILEPATH=/usr/bin/sysctl
 
+//Path to a library.
+SCPLIB:FILEPATH=SCPLIB-NOTFOUND
+
+//Path to a library.
+scplib:FILEPATH=scplib-NOTFOUND
+
 
 ########################
 # INTERNAL cache entries

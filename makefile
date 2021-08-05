@@ -26,10 +26,10 @@ $(STRICT_EXEC): main.c
 	@$(CC) -o $@ $^ $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
 
 clean:
-	@rm -rf $(OBJ)
 
 mrproper: clean
 	@rm -rf $(EXEC)
+	@rm -rf $(STRICT_EXEC)
 
 run: $(EXEC)
 	@./$^
@@ -42,4 +42,4 @@ run_strict: $(STRICT_EXEC)
 install: $(EXEC)
 	@cp $^ /usr/bin/
 
-.PHONY: all clear mrproper run install
+.PHONY: all clear mrproper run run_strict install

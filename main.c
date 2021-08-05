@@ -6,12 +6,12 @@
 
 #define BUFFER_SIZE 256
 
-typedef struct argInput{
+typedef struct argInput {
 	int argc;
 	char** args;
 } argInput;
 
-char* appendPath(const char* s1, const char* s2){
+char* appendPath(const char* s1, const char* s2) {
 	char* ans = malloc(0);
 	unsigned long i;
 	for (i = 0; s1[i] != '\0' ; ++i) {
@@ -30,7 +30,7 @@ char* appendPath(const char* s1, const char* s2){
 	return ans;
 }
 
-argInput splitInput(const char* input){
+argInput splitInput(const char* input) {
 	char** ans = malloc(0);
 	char* arg = malloc(0);
 	size_t j = 0;
@@ -57,31 +57,31 @@ argInput splitInput(const char* input){
 	return argI;
 }
 
-char** generatePath(const char* rawPath){
+char** generatePath(const char* rawPath) {
 	char** paths = malloc(0);
 	char* path = malloc(0);
 	unsigned long pathSize = 0;
 	unsigned long nbPaths = 0;
 	for (int i = 0; rawPath[i] != '\0'; ++i) {
 		if (rawPath[i] == ':'){
-			paths = (char**)realloc(paths, (nbPaths + 1) * sizeof(char*));
+			paths = realloc(paths, (nbPaths + 1) * sizeof(char*));
 			paths[nbPaths] = path;
-			path = (char*)malloc(0);
+			path = malloc(0);
 			pathSize = 0;
 			++nbPaths;
 			continue;
 		}
-		path = (char*)realloc(path, pathSize + 1);
+		path = realloc(path, pathSize + 1);
 		path[pathSize] = rawPath[i];
 		++pathSize;
 	}
-	paths = (char**)realloc(paths, nbPaths + 2);
+	paths = realloc(paths, nbPaths + 2);
 	paths[nbPaths] = path;
 	paths[nbPaths + 1] = NULL;
 	return paths;
 }
 
-int execAllPaths(char** args, char** paths){
+int execAllPaths(char** args, char** paths) {
 	char* firstArg = *args;
 	if (*firstArg == '/' || *firstArg == '.') return execve(*args, args, __environ);
 	for (int i = 0; paths[i] != NULL; ++i) {
@@ -93,7 +93,7 @@ int execAllPaths(char** args, char** paths){
 	return execve(*args, args, __environ);
 }
 
-int execBuiltIn(int argc, char** args, func cmd){
+int execBuiltIn(int argc, char** args, func cmd) {
 	return cmd(argc, args);
 }
 

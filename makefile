@@ -2,7 +2,7 @@ DEBUG = no
 GRAMMAR_NAZI = no
 
 CC = gcc
-CCFLAGS = -std=gnu17 -Wall -Wextra -Wconversion
+CCFLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wpedantic
 LDFLAGS =
 INCLUDES = -I. -I/usr/include -Ilibs/scplib
 LIBS = -L/usr/lib

@@ -6,10 +6,10 @@
 
 #define BUFFER_SIZE 256
 
-struct argInput{
+typedef struct argInput{
     int argc;
     char** args;
-};argInput;
+}argInput;
 
 char* appendPath(const char* s1, const char* s2){
     char* ans = malloc(0);
@@ -30,11 +30,11 @@ char* appendPath(const char* s1, const char* s2){
     return ans;
 }
 
-struct argInput splitInput(const char* input){
+argInput splitInput(const char* input){
     char** ans = malloc(0);
     char* arg = malloc(0);
     size_t j = 0;
-    ulong k = 0;
+    unsigned long k = 0;
     for (int i = 0; !input[i] || input[i] != '\n'; ++i) {
         if (input[i] == ' '){
             ans = realloc(ans, (k+1)*sizeof(char*));
@@ -98,12 +98,12 @@ int execBuiltIn(int argc, char** args, func cmd){
 }
 
 int main() {
-    scpHashMap* builtins = generateHashmap();
+    struct scpHashMap* builtins = generateHashmap();
     char** paths = generatePath(getenv("PATH"));
     while(1){
         char pwd[BUFFER_SIZE];
-        //printf("PATH: [%s]\n$ ", getcwd(pwd, BUFFER_SIZE));
-        printf("$ ");
+        printf("PATH: [%s]\n$ ", getcwd(pwd, BUFFER_SIZE));
+        //printf("$ ");
         fflush(stdout);
         char userInput[BUFFER_SIZE] = {0};
         fgets(userInput, BUFFER_SIZE, stdin);
@@ -111,8 +111,8 @@ int main() {
         struct argInput input = splitInput(userInput);
         pid_t pid = fork();
         if (pid == 0){
-            func cmd = (func)scpHashMap_search(builtins, *input.args);
-            if (cmd != NULL) execBuiltIn(input.argc, input.args, cmd);
+            func_pair* cmd_ptr = scpHashMap_search(builtins, *input.args);
+            if (cmd_ptr != NULL) execBuiltIn(input.argc, input.args, cmd_ptr->value); //(*cmd_ptr).value
             else execAllPaths(input.args, paths);
         }
         waitpid(-1, &pid, 0);

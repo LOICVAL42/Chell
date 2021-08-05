@@ -1,13 +1,13 @@
+#ifndef CSHELL_BUILTINS_H
+#define CSHELL_BUILTINS_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include "libs/scplib/scp/containers/hashmap.h"
 #include "libs/scplib/scp/utils/hash.h"
 #include "libs/scplib/scp/utils/cmp.h"
-#ifndef CSHELL_BUILTINS_H
-#define CSHELL_BUILTINS_H
 
-#define scpHashMap struct scpHashMap
 
 int cd(int argc, char** args){
     if (argc == 1){
@@ -46,10 +46,10 @@ func_pair builtins[] = {
         {NULL, NULL}
 };
 
-scpHashMap* generateHashmap(){
-    scpHashMap* builtinsHashMap = scpHashMap_new(scpHash_stringA, scpHash_stringB, scpCmp_string);
+struct scpHashMap* generateHashmap(){
+    struct scpHashMap* builtinsHashMap = scpHashMap_new(scpHash_stringA, scpHash_stringB, scpCmp_string);
     for (int i = 0; builtins[i].key != NULL; ++i) {
-        scpHashMap_insert(builtinsHashMap, builtins[i].key, builtins[i].value);
+        scpHashMap_insert(builtinsHashMap, builtins[i].key, builtins + i); // &builtins[i]
     }
     return builtinsHashMap;
 }

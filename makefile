@@ -32,11 +32,11 @@ mrproper: clean
 	@rm -rf $(STRICT_EXEC)
 
 run: $(EXEC)
-	@./$^
+	@-./$^
 	@rm $^
 
 run_strict: $(STRICT_EXEC)
-	@./$^
+	@-./$^
 	@rm $^
 
 install: $(EXEC)

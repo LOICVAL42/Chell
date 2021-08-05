@@ -1,26 +1,12 @@
-DEBUG = no
-GRAMMAR_NAZI = no
-
 CC = gcc
-CCFLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wpedantic
-LDFLAGS =
+CCFLAGS = -std=gnu17 -O2 -Wall -Wextra -Wconversion -Werror
+LDFLAGS = 
 INCLUDES = -I. -I/usr/include -Ilibs/scplib
 LIBS = -L/usr/lib
-SRC = $(wildcard *.c)
+SRC = main.c # $(wildcard *.c)
 OBJ = $(SRC:.c=.o)
 EXEC = Chell
-
-ifeq ($(DEBUG),yes)
-	CCFLAGS += -O0
-else
-	CCFLAGS += -O2
-endif
-
-ifeq ($(GRAMMAR_NAZI),yes)
-	CCFLAGS += -Werror
-else
-	CCFLAGS +=
-endif
+STRICT_EXEC = strict_$(EXEC)
 
 empty =
 space = $(empty) $(empty)
@@ -33,8 +19,11 @@ endef
 
 all: $(EXEC)
 
-$(EXEC): $(SRC)
+$(EXEC): main.c
 	@$(CC) -o $@ $^ $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
+
+$(STRICT_EXEC): main.c
+	@$(CC) -o $@ $^ $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
 
 clean:
 	@rm -rf $(OBJ)
@@ -43,9 +32,14 @@ mrproper: clean
 	@rm -rf $(EXEC)
 
 run: $(EXEC)
-	@./$(EXEC)
+	@./$^
+	@rm $^
 
-install:
-	@cp $(EXEC) /usr/bin/
+run_strict: $(STRICT_EXEC)
+	@./$^
+	@rm $^
+
+install: $(EXEC)
+	@cp $^ /usr/bin/
 
 .PHONY: all clear mrproper run install

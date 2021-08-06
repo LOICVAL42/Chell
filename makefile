@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -std=gnu17 -O2 -Wall -Wextra -Wconversion -Werror
+CCFLAGS = -std=gnu17 -O2 -Wall -Wextra -Wconversion
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include -Ilibs/scplib
 LIBS = -L/usr/lib

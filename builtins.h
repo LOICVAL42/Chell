@@ -10,6 +10,8 @@
 #include "libs/scplib/scp/utils/cmp.h"
 
 int cd(int argc, char** args) {
+    printf("cd moi");
+    fflush(stdout);
 	if (argc == 1) {
 		chdir(getenv("HOME")); // Can glitch sometimes but fuck it hey i'll deal with it later
 		return EXIT_SUCCESS;

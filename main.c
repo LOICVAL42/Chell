@@ -35,8 +35,9 @@ argInput splitInput(const char* input) {
 	char* arg = malloc(0);
 	size_t j = 0;
 	unsigned long k = 0;
-	for (int i = 0; !input[i] || input[i] != '\n'; ++i) {
+	for (int i = 0; input[i] != '\0' && input[i] != '\n'; ++i) {
 		if (input[i] == ' ') {
+            if (j == 0) continue;
 			ans = realloc(ans, (k+1)*sizeof(char*));
 			ans[k] = arg;
 			++k;
@@ -44,7 +45,7 @@ argInput splitInput(const char* input) {
 			arg = malloc(0);
 			continue;
 		}
-		arg = realloc(arg, j + 1);
+        arg = realloc(arg, (j + 1) * sizeof(char));
 		arg[j] = input[i];
 		++j;
 	}
@@ -55,6 +56,52 @@ argInput splitInput(const char* input) {
 	argI.argc = (int)k+1;
 	argI.args = ans;
 	return argI;
+}
+
+argInput* splitAllInput(const char* input){
+    argInput* ans = malloc(0);
+    char* partOfInput = malloc(0);
+    unsigned long j = 0;
+    unsigned long k = 0;
+    for (int i = 0; !input[i] || input[i] != '\n'; ++i) {
+        switch(input[i]){
+            case ';':
+            case '&':
+            case '|':
+                if (k == 0) {
+                    fprintf(stderr, "Syntax Error in commands list : too much %c characters", input[i]);
+                    return NULL;
+                }
+                ans = realloc(ans, (j+2)* sizeof(struct argInput));
+                partOfInput = realloc(partOfInput, k+1);
+                partOfInput[k] = '\0';
+                ans[j] = splitInput(partOfInput + '\0');
+                argInput separator;
+                char** args = (char **) &input[i];
+                separator.args = args;
+                separator.argc = 0;
+                ans[j+1] = separator;
+                k = 0;
+                partOfInput = malloc(0);
+                j += 2;
+                if (input[i] != ';') ++i;
+                break;
+            default:
+                partOfInput = realloc(partOfInput, k+1);
+                partOfInput[k] = input[i];
+                ++k;
+                break;
+        }
+    }
+    ans = realloc(ans, (j+2)* sizeof(argInput));
+    partOfInput = realloc(partOfInput, k+1);
+    partOfInput[k] = '\0';
+    ans[j] = splitInput(partOfInput);
+    argInput null;
+    null.argc = NULL;
+    null.args = NULL;
+    ans[j+1] = null;
+    return ans;
 }
 
 char** generatePath(const char* rawPath) {
@@ -94,6 +141,9 @@ int execAllPaths(char** args, char** paths) {
 }
 
 int execBuiltIn(int argc, char** args, func cmd) {
+    printf("Salut c'est moi\n");
+    printf("%s\n", *args);
+    fflush(stdout);
 	return cmd(argc, args);
 }
 
@@ -108,12 +158,33 @@ int main(void) {
 		char userInput[BUFFER_SIZE] = {0};
 		fgets(userInput, BUFFER_SIZE, stdin);
 		if (feof(stdin)) return EXIT_SUCCESS;
-		struct argInput input = splitInput(userInput);
+		argInput* input = splitAllInput(userInput);
 		pid_t pid = fork();
 		if (pid == 0){
-			func_pair* cmd = (func_pair*)scpHashMap_search(builtins, *input.args);
-			if (cmd != NULL) execBuiltIn(input.argc, input.args, cmd->value);
-			else execAllPaths(input.args, paths);
+            if (input == NULL) return EXIT_FAILURE;
+            int previousResult = EXIT_SUCCESS;
+            for (int i = 0; input[i].args != NULL && input[i].argc != NULL ; ++i) {
+                if (input[i].argc == 0){
+                    printf("Separator\n");
+                    fflush(stdout);
+                    switch (**(input[i].args)) {
+                        case ';':
+                            continue;
+                        case '&':
+                            if (previousResult == EXIT_FAILURE) return EXIT_FAILURE;
+                            continue;
+                        case '|':
+                            if (previousResult == EXIT_SUCCESS) return EXIT_SUCCESS;
+                            continue;
+                        default:
+                            fprintf(stderr, "Unknown separator for lists. Should NOT happen");
+                            break;
+                    }
+                }
+                func_pair* cmd = (func_pair*)scpHashMap_search(builtins, *input[i].args);
+                if (cmd != NULL) previousResult = execBuiltIn(input[i].argc, input[i].args, (*cmd).value);
+                else previousResult = execAllPaths(input[i].args, paths);
+            }
 		}
 		waitpid(-1, &pid, 0);
 	}

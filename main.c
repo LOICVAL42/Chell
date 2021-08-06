@@ -141,9 +141,6 @@ int execAllPaths(char** args, char** paths) {
 }
 
 int execBuiltIn(int argc, char** args, func cmd) {
-    printf("Salut c'est moi\n");
-    printf("%s\n", *args);
-    fflush(stdout);
 	return cmd(argc, args);
 }
 

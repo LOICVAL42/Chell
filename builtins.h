@@ -6,8 +6,7 @@
 #include <errno.h>
 
 #include "libs/scplib/scp/containers/hashmap.h"
-#include "libs/scplib/scp/utils/hash.h"
-#include "libs/scplib/scp/utils/cmp.h"
+#include "libs/scplib/scp/utils.h"
 
 int cd(int argc, char** args) {
     printf("cd moi");
@@ -39,16 +38,16 @@ int cd(int argc, char** args) {
 
 typedef int (*func)(int argc, char** args);
 
-typedef struct func_pair{
+typedef struct func_pair {
 	const char* key;
 	func value;
 } func_pair;
 
-struct scpHashMap* generateHashmap(void) {
-	func_pair builtins[] = {
-		{ "cd", cd }
-	};
+static func_pair builtins[] = {
+	{ "cd", cd }
+};
 
+struct scpHashMap* generateHashmap(void) {
 	struct scpHashMap* builtinsHashMap = scpHashMap_new(scpHash_stringA, scpHash_stringB, scpCmp_string);
 	for (size_t i = 0; i < sizeof builtins / sizeof *builtins; ++i)
 		scpHashMap_insert(builtinsHashMap, builtins[i].key, builtins + i);
